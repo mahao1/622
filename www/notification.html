@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        <title>Blank App</title>
+        <style>
+            input{
+                width: 200px;
+                height: 30px;
+                background: #399;
+                color: #fff;
+                font-size: 20px;
+                margin: 20px 10px;
+                border: none;
+                border-radius: 10px;
+            }
+        </style>
+    </head>
+    <body>
+    <input type="button" value="alert" id="alert">
+    <input type="button" value="confirm" id="confirm">
+    <input type="button" value="prompt" id="prompt">
+    <input type="button" value="beep" id="beep">
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded',function(){
+        var oAlert = document.querySelector('#alert');
+        var oConfirm = document.querySelector('#confirm');
+        var oPrompt = document.querySelector('#prompt');
+        var oBeep = document.querySelector('#beep');
+        oAlert.addEventListener('touchstart',function(){
+          navigator.notification.alert('确认对话框的内容', function(){
+            alert('ok了');
+          }, '标题', '按钮的内容');
+        },false);
+        oConfirm.addEventListener('touchstart',function(){
+          navigator.notification.confirm('确认选择框的内容', function(index){
+            alert(index);
+          }, '标题', '确认,取消');
+        },false);
+        oPrompt.addEventListener('touchstart',function(){
+          navigator.notification.prompt('确认输入框的内容', function(){
+            alert("按钮索引 " + results.buttonIndex + " 和输入的内容 " + results.input1);
+          }, '标题', ['确认','取消'],'请在这里输入');
+        },false);
+        oBeep.addEventListener('touchstart',function(){
+          navigator.notification.beep(2);
+        },false);
+
+
+      },false);
+    </script>
+    </body>
+</html>

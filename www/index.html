@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        <title>Blank App</title>
+        <style>
+          input{
+            width: 200px;
+            height: 30px;
+            background: #399;
+            color: #fff;
+            font-size: 20px;
+            border: none;
+            border-radius: 10px;
+            position: absolute;
+            bottom: 10%;
+            left: 20px;
+          }
+          .div2{
+            width: 100px;
+            height: 100px;
+            background: #399;
+            position: absolute;
+            left: 30%;
+            top: 40%;
+          }
+
+          @-webkit-keyframes test {
+            0%{-webkit-transform: rotate(15deg)}
+            25%{-webkit-transform: rotate(-15deg)}
+            50%{-webkit-transform: rotate(15deg)}
+            75%{-webkit-transform: rotate(-15deg)}
+            100%{-webkit-transform: rotate(15deg)}
+          }
+          .shake{
+            -webkit-animation-name: test;
+            -webkit-animation-iteration-count: 2;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-timing-function: ease;
+          }
+        </style>
+    </head>
+    <body>
+    <input type="button" value="拍照" id="btn1"><br/>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script>
+      function rnd(n,m){return parseInt(n+Math.random()*(m-n))}
+      document.addEventListener('DOMContentLoaded',function(){
+        var oBtn1 = document.querySelector('#btn1');
+
+        oBtn1.onclick = function() {
+          //      navigator.camera.getPicture(成功回调, 失败回调,配置可选);
+          function onSuccess(imageData){
+            alert("拍照成功:"+imageData);
+            var oImg = new Image();
+            oImg.src = "data:image/jpeg;base64," + imageData;
+            oImg.width=100;
+            document.body.appendChild(oImg);
+
+          };
+          function onFail(){
+            alert('拍照失败' + message);
+          };
+          var options = {
+            quality:100,
+            destinationType:0,//0:base64 1:URI 2:本地地址
+            sourceType:0,// 0:相册 1:拍照 2:都有
+            allowEdit:true//是否允许编辑
+          };
+          navigator.camera.getPicture(onSuccess, onFail,options);
+        }
+      },false);
+    </script>
+    </body>
+</html>

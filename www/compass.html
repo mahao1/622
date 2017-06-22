@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        <title>Blank App</title>
+        <style>
+          input{
+              width: 200px;
+              height: 30px;
+              background: #399;
+              color: #fff;
+              font-size: 20px;
+              margin: 10px;
+              border: none;
+              border-radius: 10px;
+          }
+
+          #img1{
+            width: 100px;
+            position: absolute;
+            top: 40%;
+            left: 30%;
+          }
+          @-webkit-keyframes test {
+            0%{-webkit-transform: rotate(15deg)}
+            25%{-webkit-transform: rotate(0deg)}
+            50%{-webkit-transform: rotate(30deg)}
+            75%{-webkit-transform: rotate(45deg)}
+            100%{-webkit-transform: rotate(15deg)}
+          }
+          .shake{
+            -webkit-animation-name: test;
+            -webkit-animation-iteration-count: 2;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-timing-function: ease;
+          }
+        </style>
+    </head>
+    <body>
+    <input type="button" value="获取一次方向" id="btn1">
+    <input type="button" value="开启实时获取" id="btn2">
+    <input type="button" value="关闭实时获取" id="btn3">
+    <img src="images/timg.jpg" alt="" id="img1">
+    <div id="div1"></div>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded',function(){
+        var oBtn1 = document.querySelector('#btn1');
+        var oBtn2 = document.querySelector('#btn2');
+        var oBtn3 = document.querySelector('#btn3');
+        var oDiv = document.querySelector('#div1');
+        var oImg = document.querySelector('#img1');
+
+        oBtn1.onclick = function(a){
+          function onSuccess(heading) {
+            alert('获取方向成功： ' + heading.magneticHeading);//角度
+          };
+
+          function onError(error) {
+            alert('获取方向失败: ' + error.code);
+          };
+
+          navigator.compass.getCurrentHeading(onSuccess, onError);
+        }
+
+        oBtn2.onclick=function(){
+          function onSuccess(heading) {
+            oDiv.innerHTML = 'Heading: ' + heading.magneticHeading;
+            oImg.style.webkitTransform = 'rotate(' + heading.magneticHeading +'deg)';
+          };
+
+          function onError(compassError) {
+            alert('实时获取失败: ' + compassError.code);
+          };
+
+          var options = {
+            frequency: 300
+          }; //每隔3秒
+
+          var watchID = navigator.compass.watchHeading(onSuccess, onError, options);
+        };
+
+        oBtn3.onclick=function(){
+          navigator.compass.clearWatch(watchID);
+        };
+
+
+      },false);
+    </script>
+    </body>
+</html>
